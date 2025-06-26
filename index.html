@@ -41,6 +41,13 @@
     button:hover {
       background-color: #0056b3;
     }
+    #mensaje-enviado {
+      text-align: center;
+      margin-top: 15px;
+      color: green;
+      font-weight: bold;
+      display: none;
+    }
     .footer {
       margin-top: 20px;
       text-align: center;
@@ -53,22 +60,52 @@
 
   <div class="container">
     <h2>Soporte - Winnet España</h2>
-    <form action="https://formsubmit.co/winnetaplicacion@gmail.com" method="POST">
+    <form id="formulario" action="https://formsubmit.co/winnetaplicacion@gmail.com" method="POST">
       <input type="text" name="name" placeholder="Tu nombre" required>
       <input type="email" name="email" placeholder="Tu correo electrónico" required>
       <textarea name="message" placeholder="Escribe tu mensaje aquí..." rows="5" required></textarea>
-      
-      <!-- Opcional: evita spam -->
+
+      <!-- Opcional: evitar captcha y evitar redirección -->
       <input type="hidden" name="_captcha" value="false">
-      <!-- Opcional: redirigir al enviar -->
-      <input type="hidden" name="_next" value="https://winnetapp.github.io/espana">
-      
+      <input type="hidden" name="_template" value="table">
+      <input type="hidden" name="_next" value="">
+
       <button type="submit">Enviar</button>
     </form>
+
+    <div id="mensaje-enviado">¡Enviado!</div>
+
     <div class="footer">
       &copy; 2025 Winnet España. Todos los derechos reservados.
     </div>
   </div>
+
+  <script>
+    const form = document.getElementById("formulario");
+    const mensaje = document.getElementById("mensaje-enviado");
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault(); // Evita que se recargue la página
+
+      const data = new FormData(form);
+      fetch(form.action, {
+        method: "POST",
+        body: data,
+        headers: {
+          'Accept': 'application/json'
+        }
+      }).then(response => {
+        if (response.ok) {
+          mensaje.style.display = "block";
+          form.reset();
+        } else {
+          alert("Error al enviar el mensaje.");
+        }
+      }).catch(error => {
+        alert("Hubo un error. Intenta de nuevo.");
+      });
+    });
+  </script>
 
 </body>
 </html>
