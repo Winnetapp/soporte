@@ -6,27 +6,31 @@
   <title>Soporte - Winnet España</title>
   <style>
     body {
+      margin: 0;
+      padding: 0;
       font-family: Arial, sans-serif;
-      background-color: #f2f2f2;
-      padding: 20px;
+      background-color: #121212; /* Fondo oscuro como tu web */
+      color: white;
     }
     .container {
       max-width: 500px;
-      margin: auto;
-      background: white;
+      margin: 50px auto;
       padding: 30px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      background-color: #1f1f1f; /* Tarjeta más clara */
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
     }
     h2 {
       text-align: center;
-      color: #333;
+      margin-bottom: 20px;
     }
     input, textarea {
       width: 100%;
       padding: 12px;
       margin: 10px 0;
-      border: 1px solid #ccc;
+      background-color: #2c2c2c;
+      color: white;
+      border: 1px solid #444;
       border-radius: 6px;
     }
     button {
@@ -37,21 +41,22 @@
       border: none;
       border-radius: 6px;
       cursor: pointer;
+      font-size: 16px;
     }
     button:hover {
       background-color: #0056b3;
     }
-    #mensaje-enviado {
-      text-align: center;
-      margin-top: 15px;
-      color: green;
-      font-weight: bold;
+    #mensaje-final {
       display: none;
+      text-align: center;
+      font-size: 20px;
+      font-weight: bold;
+      padding: 40px 0;
     }
     .footer {
-      margin-top: 20px;
+      margin-top: 30px;
       text-align: center;
-      color: #666;
+      color: #aaa;
       font-size: 14px;
     }
   </style>
@@ -60,12 +65,14 @@
 
   <div class="container">
     <h2>Soporte - Winnet España</h2>
+
+    <!-- Formulario -->
     <form id="formulario" action="https://formsubmit.co/winnetaplicacion@gmail.com" method="POST">
       <input type="text" name="name" placeholder="Tu nombre" required>
       <input type="email" name="email" placeholder="Tu correo electrónico" required>
       <textarea name="message" placeholder="Escribe tu mensaje aquí..." rows="5" required></textarea>
 
-      <!-- Opcional: evitar captcha y evitar redirección -->
+      <!-- Configuraciones ocultas -->
       <input type="hidden" name="_captcha" value="false">
       <input type="hidden" name="_template" value="table">
       <input type="hidden" name="_next" value="">
@@ -73,7 +80,11 @@
       <button type="submit">Enviar</button>
     </form>
 
-    <div id="mensaje-enviado">¡Enviado!</div>
+    <!-- Mensaje final -->
+    <div id="mensaje-final">
+      ¡Enviado!<br>
+      Le responderemos lo antes posible.
+    </div>
 
     <div class="footer">
       &copy; 2025 Winnet España. Todos los derechos reservados.
@@ -82,10 +93,10 @@
 
   <script>
     const form = document.getElementById("formulario");
-    const mensaje = document.getElementById("mensaje-enviado");
+    const mensajeFinal = document.getElementById("mensaje-final");
 
     form.addEventListener("submit", function (e) {
-      e.preventDefault(); // Evita que se recargue la página
+      e.preventDefault();
 
       const data = new FormData(form);
       fetch(form.action, {
@@ -96,8 +107,8 @@
         }
       }).then(response => {
         if (response.ok) {
-          mensaje.style.display = "block";
-          form.reset();
+          form.style.display = "none"; // Oculta el formulario
+          mensajeFinal.style.display = "block"; // Muestra el mensaje
         } else {
           alert("Error al enviar el mensaje.");
         }
